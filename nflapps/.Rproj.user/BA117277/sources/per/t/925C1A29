@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1614480528630.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3411214384",
+    "id" : "925C1A29",
+    "lastKnownWriteTime" : 1614481310,
+    "last_content_update" : 1614481310319,
+    "path" : "~/Desktop/R/nflapps/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "145,35",
+        "scrollLine" : "138"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615589817490.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1112813610",
+    "id" : "A3D0ADE4",
+    "lastKnownWriteTime" : 1615837725,
+    "last_content_update" : 1615837725377,
+    "path" : "~/Desktop/R/nflplayercards/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "29,29",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1616610189038.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2757280673",
+    "id" : "42B711FC",
+    "lastKnownWriteTime" : 1616542762,
+    "last_content_update" : 1616542762,
+    "path" : "~/Desktop/R/fourth_down_behavior.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "134,27",
+        "scrollLine" : "105"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

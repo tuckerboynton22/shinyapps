@@ -1,0 +1,180 @@
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+library(ggimage)
+library(nflfastR)
+library(ggtext)
+library(statar)
+library(nfl4th)
+
+data <- readRDS(url('https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2020.rds'))
+fourth_data <- load_4th_pbp(2020)
+
+go_rate <- fourth_data %>%
+  filter(week > 1, go_boost > 1) %>%
+  group_by(posteam, week) %>%
+  summarize(go_rate = mean(go),
+            gos = sum(go)/100)
+
+lag_performance <- fourth_data %>%
+  filter(go_boost > 1, pass == 1 | rush == 1) %>%
+  group_by(posteam, week) %>%
+  summarize(lag_wp_gained = sum(wpa),
+            lag_gos = sum(go)/100) %>%
+  mutate(week = week + 1)
+
+merged_performance <- merge(lag_performance, go_rate)
+
+merged_performance %>%
+  ggplot(aes(lag_wp_gained, go_rate)) +
+  stat_binmean(n=25, color = "blue", size = 3, alpha = 0.75) +
+  labs(x = "Win prob gained/lost on 4th down 'go's in game n-1 (binned)",
+       y = "Average 'go' rate in game n",
+       caption = "Figure: @Tucker_TnL | Data: @nflfastR, nfl4th",
+       subtitle = "4th downs with 'go' boost > 1pp | 2020",
+       title = "Do Coaches Respond Adversely to Failed 4th Down Attempts?"
+  ) +
+  ggthemes::theme_fivethirtyeight() +
+  theme(
+    legend.position = "none",
+    plot.title = element_markdown(hjust = 0.5),
+    plot.subtitle = element_markdown(size = 12, hjust = 0.5),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10)
+  ) +
+  scale_y_continuous(breaks = scales::pretty_breaks()) +
+  scale_x_continuous(breaks = scales::pretty_breaks())
+
+incentives <- fourth_data %>%
+  filter(go_boost > 1, !is.na(wpa), wp>0.05) %>%
+  arrange(desc(posteam, week, game_seconds_remaining)) %>%
+  mutate(
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) == 100 & week == lag(week) ~ lag(wpa),
+      TRUE ~ NA_real_),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    lag_wpa = case_when(
+      posteam == lag(posteam) & lag(go) != 100 & week == lag(week) ~ lag(lag_wpa),
+      TRUE ~ lag_wpa),
+    go = go/100) %>%
+  select(week, posteam, game_seconds_remaining, desc, go_boost, lag_wpa, go, wpa)
+
+incentives %>%
+  ggplot(aes(lag_wpa, go)) +
+  stat_binmean(n=25, color = "blue", size = 3, alpha = 0.75) +
+  labs(x = "Win prob gained/lost on last 4th down 'go' (binned)",
+       y = "Average 'go' rate",
+       caption = "Figure: @Tucker_TnL | Data: @nflfastR, nfl4th",
+       subtitle = "4th downs with 'go' boost > 1pp that happened in same week | 2020",
+       title = "Do Coaches Respond Adversely to Failed 4th Down Attempts?"
+  ) +
+  ggthemes::theme_fivethirtyeight() +
+  theme(
+    legend.position = "none",
+    plot.title = element_markdown(hjust = 0.5),
+    plot.subtitle = element_markdown(size = 12, hjust = 0.5),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10)
+  ) +
+  scale_y_continuous(breaks = scales::pretty_breaks()) +
+  scale_x_continuous(breaks = scales::pretty_breaks())
+
+model <- glm(go ~ lag_wpa, data = incentives, family = "binomial")
+summary(model)
+
+model <- lm(go ~ lag_wpa, data = incentives)
+summary(model)
+
+fourth_downs <- fourth_data %>%
+  filter(!is.na(go_boost), ydstogo < 4, wp >= 0.05, wp <= 0.95) %>%
+  mutate(
+    xwp_boost = if_else(go == 100, go_boost, -go_boost),
+    fourth_success = if_else(xwp_boost > 0, 1, 0)) %>%
+  select(desc, posteam, down, wpa, ydstogo, go_boost, go, xwp_boost, fourth_success) %>%
+  group_by(posteam) %>%
+  summarize(
+    wp_boost = mean(wpa)*100,
+    xwp_boost = mean(xwp_boost),
+    fourth_success = mean(fourth_success),
+    n = n()
+  ) %>%
+  rename(team_abbr = posteam) %>%
+  merge(teams_colors_logos)
+
+fourth_downs %>%
+  ggplot(aes(fourth_success, xwp_boost)) +
+  geom_image(image = fourth_downs$team_logo_espn, asp = 16/9) +
+  labs(x = "Correct Decision Rate",
+       y = "Expected Win Probability Boost per 4th Down (percentage pts)",
+       caption = "Figure: @Tucker_TnL / Data: @nflfastR, nfl4th",
+       subtitle = "WP boost between -3 & 3 / 2020 Wks 1-21 / Win probability 5-95%",
+       title = "Who Made Good 4th Down Decisions?"
+  ) +
+  ggthemes::theme_fivethirtyeight() +
+  theme(
+    legend.position = "none",
+    plot.title = element_markdown(hjust = 0.5),
+    plot.subtitle = element_markdown(size = 12, hjust = 0.5),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10)
+  ) +
+  scale_y_continuous(breaks = scales::pretty_breaks()) +
+  scale_x_continuous(breaks = scales::pretty_breaks())
+
+fourth_downs %>%
+  ggplot(aes(xwp_boost, wp_boost)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed") +
+  geom_image(image = fourth_downs$team_logo_espn, asp = 16/9) +
+  labs(x = "Expected Win Probability Boost per 4th Down (percentage pts)",
+       y = "Actual Win Probability Boost per 4th Down (percentage pts)",
+       caption = "Figure: @Tucker_TnL / Data: @nflfastR, nfl4th",
+       subtitle = "4th & < 4 / 2020 Wks 1-21 / Win probability 5-95%",
+       title = "Process vs. Results on Hard 4th Downs"
+  ) +
+  ggthemes::theme_fivethirtyeight() +
+  theme(
+    legend.position = "none",
+    plot.title = element_markdown(hjust = 0.5),
+    plot.subtitle = element_markdown(size = 12, hjust = 0.5),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10)
+  ) +
+  scale_y_continuous(breaks = scales::pretty_breaks()) +
+  scale_x_continuous(breaks = scales::pretty_breaks())

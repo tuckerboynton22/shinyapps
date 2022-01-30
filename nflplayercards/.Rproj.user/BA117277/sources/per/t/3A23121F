@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615829093038.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3A23121F",
+    "lastKnownWriteTime" : 4324593664,
+    "last_content_update" : 1615829093038,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "230A7566",
+        "caption" : "caphits",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=caphits&cache_key=230A7566",
+        "displayedObservations" : 51,
+        "environment" : "",
+        "object" : "caphits",
+        "preview" : 0,
+        "totalObservations" : 51,
+        "variables" : 3
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

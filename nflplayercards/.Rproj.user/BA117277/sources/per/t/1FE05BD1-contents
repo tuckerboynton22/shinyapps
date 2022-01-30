@@ -1,0 +1,40 @@
+---
+title: "2020 NFL QB Cards"
+output: flexdashboard::flex_dashboard
+---
+
+```{r setup, include=FALSE, cache=TRUE}
+library(flexdashboard)
+player <- "T.Brady"
+```
+
+Column {data-width=250}
+-----------------------------------------------------------------------
+###
+```{r, out.height="100%", out.width="100%"}
+knitr::include_graphics(paste0(player, " Header.png"))
+knitr::include_graphics(paste0(player, " Headshot.png"))
+knitr::include_graphics(paste0(player, " Info.png"))
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+###
+```{r, out.height="100%", out.width="100%", fig.align='center'}
+knitr::include_graphics(paste0(player, " Basic.png"))
+knitr::include_graphics(paste0(player, " Heatmap.png"))
+knitr::include_graphics(paste0(player, " EPA.png"))
+```
+
+Column {data-width = 300}
+-----------------------------------------------------------------------
+
+###
+```{r, out.height="100%", out.width="100%", fig.align='center'}
+knitr::include_graphics(paste0(player, " EPA Timeline.png"))
+knitr::include_graphics(paste0(player, " EPA Gamelog.png"))
+knitr::include_graphics("Credit.png")
+```
+
+

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1616609695259.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "ABDE59C8",
+    "lastKnownWriteTime" : 4324690216,
+    "last_content_update" : 1616609695259,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "9DC1C82D",
+        "caption" : "fourth_downs",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=fourth_downs&cache_key=9DC1C82D",
+        "displayedObservations" : 3747,
+        "environment" : "",
+        "object" : "fourth_downs",
+        "preview" : 0,
+        "totalObservations" : 3747,
+        "variables" : 10
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

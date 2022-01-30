@@ -1,0 +1,156 @@
+library(tidyverse)
+library(ggrepel)
+library(ggimage)
+library(nflfastR)
+library(gt)
+library(paletteer)
+library(webshot)
+
+options(scipen = 9999)
+
+data <- readRDS(url('https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_2020.rds'))
+setwd("/Users/tuckerboynton/Desktop")
+
+passers <- data %>%
+  filter(down < 5, !is.na(name), !is.na(qb_epa), pass == 1 | rush == 1) %>%
+  group_by(name) %>%
+  summarize(
+    Plays = n(),
+    Dropbacks = sum(pass),
+    Sacks = round(mean(qb_epa * sack), digits = 3),
+    Scrambles = round(mean(qb_epa * qb_scramble), digits = 3),
+    Rushes = round(mean(qb_epa * rush), 3),
+    Passes = round(mean(qb_epa * pass - qb_epa * qb_scramble - qb_epa * sack), 3),
+    Total = Sacks + Scrambles + Rushes + Passes
+  ) %>%
+  filter(Dropbacks>10)
+
+my_theme <- function(data) {
+  tab_options(
+    data = data,
+    heading.title.font.size = 14,
+    heading.subtitle.font.size = 10,
+    column_labels.font.size = 12,
+    table.font.size = 12,
+    heading.align = "left",
+    table.border.top.color = "black",
+    column_labels.border.bottom.color = "black",
+    column_labels.border.bottom.width= px(3)
+  )
+}
+
+qb_epa_2020 <- passers %>%
+  arrange(desc(Total)) %>%
+  gt() %>%
+  tab_header(
+    title = "Breaking Down EPA for Remaining QBs",
+    subtitle = "2020 Conference Championships"
+  ) %>% 
+  my_theme() %>%
+  tab_source_note(md("**Table:** @Tucker_TnL | **Data:** @nflfastR")) %>%
+  cols_label(name = "Quarterback") %>%
+  cols_align(align = "center", columns = c(2,3,4,5,6,7,8)) %>%
+  data_color(
+    columns = 4:8, 
+    colors = scales::col_numeric(
+      palette = paletteer::paletteer_d(
+        palette = "ggsci::green_material"
+      ) %>% as.character(),
+      domain = NULL
+    )
+  )
+
+qb_epa_2020
+
+passers2 <- data %>%
+  filter(down < 5, !is.na(name), !is.na(qb_epa), pass == 1 | rush == 1, week<18,
+         play_id != 577 | game_id != "2020_12_SEA_PHI") %>%
+  group_by(name) %>%
+  summarize(
+    Plays = n(),
+    Dropbacks = sum(pass),
+    Sacks = mean(qb_epa * sack),
+    Scrambles = mean(qb_epa * qb_scramble),
+    Rushes = mean(qb_epa * rush),
+    Air = mean(qb_epa*pass - qb_epa*qb_scramble - qb_epa*sack
+                        - ifelse(complete_pass==0, 0, yac_epa)),
+    YAC = mean(ifelse(complete_pass==0, 0, yac_epa)),
+    Total = round((Sacks + Scrambles + Rushes + Air + YAC), 3),
+    Sacks = round(Sacks, 3),
+    Scrambles = round(Scrambles, 3),
+    Rushes = round(Rushes, 3),
+    Air = round(Air, 3),
+    YAC = round(YAC, 3)
+  ) %>%
+  filter(Dropbacks>287, Total>0.15)
+
+qb_epa_2020_2 <- passers2 %>%
+  arrange(desc(Total)) %>%
+  gt() %>%
+  tab_header(
+    title = "Breaking Down QB EPA, 2020",
+    subtitle = "Min. 288 dropbacks"
+  ) %>% 
+  my_theme() %>%
+  tab_source_note(md("**Table:** @Tucker_TnL | **Data:** @nflfastR")) %>%
+  cols_label(name = "Quarterback") %>%
+  cols_align(align = "center", columns = c(2,3,4,5,6,7,8, 9)) %>%
+  data_color(
+    columns = 4:9, 
+    colors = scales::col_numeric(
+      palette = paletteer::paletteer_d(
+        palette = "ggsci::green_material"
+      ) %>% as.character(),
+      domain = NULL
+    )
+  )
+
+qb_epa_2020_2
+
+passers_cpoe <- data %>%
+  filter(!is.na(cpoe), name == "T.Brady" | name == "P.Mahomes" | name == "J.Allen" | name == "A.Rodgers") %>%
+  group_by(name) %>%
+  summarize(
+    Passes = sum(pass),
+    behind_los = round(mean(ifelse(air_yards<1, cpoe, 0)), 3),
+    one_five = round(mean(ifelse(air_yards<6 & air_yards>0, cpoe, 0)), 3),
+    six_ten = round(mean(ifelse(air_yards<11 & air_yards>5, cpoe, 0)), 3),
+    eleven_fifteen = round(mean(ifelse(air_yards<16 & air_yards>10, cpoe, 0)), 3),
+    sixteen_twenty = round(mean(ifelse(air_yards<21 & air_yards>15, cpoe, 0)), 3),
+    twentyone_twentyfive = round(mean(ifelse(air_yards<26 & air_yards>20, cpoe, 0)), 3),
+    more = round(mean(ifelse(air_yards>25, cpoe, 0)), 3),
+    Total = round(mean(cpoe), 3)
+  ) %>%
+  filter(Passes>250)
+
+qb_cpoe_2020 <- passers_cpoe %>%
+  arrange(desc(Total)) %>%
+  gt() %>%
+  tab_header(
+    title = "Breaking Down CPOE for Remaining QBs",
+    subtitle = "2020 Conference Championships"
+  ) %>%
+  my_theme() %>%
+  tab_source_note(md("**Table:** @Tucker_TnL | **Data:** @nflfastR")) %>%
+  cols_label(name = "Quarterback") %>%
+  cols_align(align = "center", columns = c(2,3,4,5,6,7,8, 9, 10)) %>%
+  cols_label(
+    behind_los = "Behind LOS",
+    one_five = "1-5 yds",
+    six_ten = "6-10 yds",
+    eleven_fifteen = "11-15 yds",
+    sixteen_twenty = "16-20 yds",
+    twentyone_twentyfive = "21-25 yds",
+    more = ">25 yds"
+  ) %>%
+  data_color(
+    columns = 3:10, 
+    colors = scales::col_numeric(
+      palette = paletteer::paletteer_d(
+        palette = "ggsci::blue_material"
+      ) %>% as.character(),
+      domain = NULL
+    )
+  )
+
+qb_cpoe_2020

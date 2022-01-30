@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615829104444.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "60317FA",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1615829104444,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "F644A54F",
+        "caption" : "roster",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=roster&cache_key=F644A54F",
+        "displayedObservations" : "4624",
+        "environment" : "",
+        "object" : "roster",
+        "preview" : "0",
+        "totalObservations" : "4624",
+        "variables" : "24"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

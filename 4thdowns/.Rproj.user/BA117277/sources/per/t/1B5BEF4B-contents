@@ -1,0 +1,121 @@
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+library(ggimage)
+library(nflfastR)
+library(ggtext)
+library(statar)
+library(nfl4th)
+
+fourth_downs <- read_csv("fourth_downs.csv")
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  
+  tags$head(
+    tags$style(HTML("@import url('https://fonts.googleapis.com/css2?family=Chivo&display=swap');
+                    
+                    /* Change header text to imported font */
+                    h1 {
+                    font-family: 'Chivo';
+                    }"))
+  ),
+   
+   # Application title
+  titlePanel(title = h1("4th Down Decision Making", align = "center"), windowTitle = "4th Down Decision Making"),
+   
+   # Sidebar with a slider input for number of bins 
+   sidebarLayout(
+      sidebarPanel(
+        sliderInput("week",
+                    "Weeks:",
+                    min = 1,
+                    max = 21,
+                    value = c(1,21)),
+        sliderInput("wp_boost",
+                    "Expected win prob boost:",
+                    min = -45,
+                    max = 45,
+                    value = c(-45,45)),
+        sliderInput("wp",
+                    "Win probability:",
+                    min = 0,
+                    max = 1,
+                    value = c(0.05,0.95)),
+        numericInput("ydstogo",
+                     "Max. yards to go:",
+                     value = 3),
+        numericInput("seconds",
+                     "Min. game seconds remaining:",
+                     value = 0),
+        submitButton(text = "Submit")),
+      
+      # Show a plot of the generated distribution
+      mainPanel(
+        plotOutput("plot", height = "500px", width = "750px"),
+        hr(),
+        print(h5("Expected win prob boost = projected WP boost relative to opposite decision")),
+        print(h5("Correct decision rate = share of decisions with positive xWP boost")),
+        print(h5("WP projections based on @benbbaldwin's 4th down model"))
+      )
+   )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+   
+   output$plot <- renderPlot({
+     
+     fourth_grouped <- fourth_downs %>%
+       filter(week >= input$week[1], week <= input$week[2], game_seconds_remaining >= input$seconds,
+              xwp_boost >= input$wp_boost[1], xwp_boost <= input$wp_boost[2],
+              ydstogo <= input$ydstogo, wp >= input$wp[1], wp <= input$wp[2]) %>%
+       group_by(posteam) %>%
+       summarize(
+         xwp_boost = mean(xwp_boost),
+         fourth_success = mean(fourth_success),
+         n = n()
+       ) %>%
+       rename(team_abbr = posteam) %>%
+       merge(teams_colors_logos)
+     
+     fourth_grouped %>%
+       ggplot(aes(fourth_success, xwp_boost)) +
+       geom_image(image = fourth_grouped$team_logo_espn, asp = 16/9) +
+       labs(x = "Correct Decision Rate",
+            y = "Expected Win Probability Boost per 4th Down",
+            caption = "Figure: @Tucker_TnL / Data: @nflfastR, nfl4th",
+            subtitle = paste0("4th & < ", input$ydstogo+1, " / xWP boost b/w ",
+                              input$wp_boost[1],  " & ", input$wp_boost[2], " / Wks ", 
+                              input$week[1], "-", input$week[2], " / Win probability ",
+                              100*input$wp[1], "-", 100*input$wp[2], "% / ", input$seconds,
+                              "+ seconds remaining"),
+            title = "4th Down Decisions, 2020"
+       ) +
+       ggthemes::theme_fivethirtyeight() +
+       theme(
+         legend.position = "none",
+         plot.title = element_markdown(hjust = 0.5),
+         plot.subtitle = element_markdown(size = 10, hjust = 0.5),
+         axis.title.x = element_text(size = 14),
+         axis.title.y = element_text(size = 14),
+         axis.text.x = element_text(size = 10),
+         axis.text.y = element_text(size = 10)
+       ) +
+       scale_y_continuous(breaks = scales::pretty_breaks()) +
+       scale_x_continuous(breaks = scales::pretty_breaks())
+   })
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)
+

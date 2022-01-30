@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+
+</head>
+<body>
+<style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#gglcvrhoxt .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 24px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: transparent;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: transparent;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#gglcvrhoxt .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#gglcvrhoxt .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: black;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: black;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: grey;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: grey;
+}
+
+#gglcvrhoxt .gt_col_heading {
+  color: #333333;
+  background-color: white;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#gglcvrhoxt .gt_column_spanner_outer {
+  color: #333333;
+  background-color: white;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#gglcvrhoxt .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#gglcvrhoxt .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#gglcvrhoxt .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: black;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#gglcvrhoxt .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gglcvrhoxt .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gglcvrhoxt .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#gglcvrhoxt .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#gglcvrhoxt .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#gglcvrhoxt .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#gglcvrhoxt .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gglcvrhoxt .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gglcvrhoxt .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#gglcvrhoxt .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: black;
+}
+
+#gglcvrhoxt .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gglcvrhoxt .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gglcvrhoxt .gt_sourcenote {
+  font-size: 16px;
+  padding: 4px;
+}
+
+#gglcvrhoxt .gt_left {
+  text-align: left;
+}
+
+#gglcvrhoxt .gt_center {
+  text-align: center;
+}
+
+#gglcvrhoxt .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#gglcvrhoxt .gt_font_normal {
+  font-weight: normal;
+}
+
+#gglcvrhoxt .gt_font_bold {
+  font-weight: bold;
+}
+
+#gglcvrhoxt .gt_font_italic {
+  font-style: italic;
+}
+
+#gglcvrhoxt .gt_super {
+  font-size: 65%;
+}
+
+#gglcvrhoxt .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="gglcvrhoxt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="8" class="gt_heading gt_title gt_font_normal" style>Breaking Down EPA for Remaining QBs</th>
+    </tr>
+    <tr>
+      <th colspan="8" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>2020 Conference Championships</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Quarterback</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Plays</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Dropbacks</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Sacks</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Scrambles</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Rushes</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Passes</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1">Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">A.Rodgers</td>
+      <td class="gt_row gt_center">700</td>
+      <td class="gt_row gt_center">695</td>
+      <td class="gt_row gt_center" style="background-color: #348838; color: #FFFFFF;">-0.05492697</td>
+      <td class="gt_row gt_center" style="background-color: #4AAC4E; color: #000000;">0.0229355816</td>
+      <td class="gt_row gt_center" style="background-color: #BCE0BD; color: #000000;">-0.0086203842</td>
+      <td class="gt_row gt_center" style="background-color: #1B5E20; color: #FFFFFF;">0.39609249</td>
+      <td class="gt_row gt_center" style="background-color: #1B5E20; color: #FFFFFF;">0.35388344</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">R.Tannehill</td>
+      <td class="gt_row gt_center">597</td>
+      <td class="gt_row gt_center">580</td>
+      <td class="gt_row gt_center" style="background-color: #44A248; color: #FFFFFF;">-0.07920465</td>
+      <td class="gt_row gt_center" style="background-color: #48A94C; color: #000000;">0.0242755282</td>
+      <td class="gt_row gt_center" style="background-color: #388E3C; color: #FFFFFF;">0.0270808930</td>
+      <td class="gt_row gt_center" style="background-color: #2F7F33; color: #FFFFFF;">0.34410963</td>
+      <td class="gt_row gt_center" style="background-color: #29742D; color: #FFFFFF;">0.31626140</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">P.Mahomes</td>
+      <td class="gt_row gt_center">830</td>
+      <td class="gt_row gt_center">819</td>
+      <td class="gt_row gt_center" style="background-color: #348738; color: #FFFFFF;">-0.05406504</td>
+      <td class="gt_row gt_center" style="background-color: #409B44; color: #FFFFFF;">0.0292523803</td>
+      <td class="gt_row gt_center" style="background-color: #81C784; color: #000000;">0.0018070480</td>
+      <td class="gt_row gt_center" style="background-color: #378C3B; color: #FFFFFF;">0.30892699</td>
+      <td class="gt_row gt_center" style="background-color: #318235; color: #FFFFFF;">0.28592138</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">T.Brady</td>
+      <td class="gt_row gt_center">834</td>
+      <td class="gt_row gt_center">822</td>
+      <td class="gt_row gt_center" style="background-color: #328436; color: #FFFFFF;">-0.05161702</td>
+      <td class="gt_row gt_center" style="background-color: #CEE9CF; color: #000000;">-0.0025140948</td>
+      <td class="gt_row gt_center" style="background-color: #91CE93; color: #000000;">-0.0009113489</td>
+      <td class="gt_row gt_center" style="background-color: #368A3A; color: #FFFFFF;">0.31469234</td>
+      <td class="gt_row gt_center" style="background-color: #368B3A; color: #FFFFFF;">0.25928196</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">J.Allen</td>
+      <td class="gt_row gt_center">879</td>
+      <td class="gt_row gt_center">814</td>
+      <td class="gt_row gt_center" style="background-color: #3C9540; color: #FFFFFF;">-0.06686339</td>
+      <td class="gt_row gt_center" style="background-color: #45A449; color: #FFFFFF;">0.0261348970</td>
+      <td class="gt_row gt_center" style="background-color: #99D19B; color: #000000;">-0.0023753722</td>
+      <td class="gt_row gt_center" style="background-color: #3C9440; color: #FFFFFF;">0.28972333</td>
+      <td class="gt_row gt_center" style="background-color: #398F3D; color: #FFFFFF;">0.24583065</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">R.Fitzpatrick</td>
+      <td class="gt_row gt_center">318</td>
+      <td class="gt_row gt_center">310</td>
+      <td class="gt_row gt_center" style="background-color: #368B3A; color: #FFFFFF;">-0.05783538</td>
+      <td class="gt_row gt_center" style="background-color: #59B55D; color: #000000;">0.0190708581</td>
+      <td class="gt_row gt_center" style="background-color: #388F3C; color: #FFFFFF;">0.0270397453</td>
+      <td class="gt_row gt_center" style="background-color: #43A147; color: #FFFFFF;">0.25700111</td>
+      <td class="gt_row gt_center" style="background-color: #398F3D; color: #FFFFFF;">0.24472631</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Watson</td>
+      <td class="gt_row gt_center">698</td>
+      <td class="gt_row gt_center">680</td>
+      <td class="gt_row gt_center" style="background-color: #6CBD6F; color: #000000;">-0.11243977</td>
+      <td class="gt_row gt_center" style="background-color: #358939; color: #FFFFFF;">0.0353150003</td>
+      <td class="gt_row gt_center" style="background-color: #D3EBD4; color: #000000;">-0.0130555273</td>
+      <td class="gt_row gt_center" style="background-color: #378C3B; color: #FFFFFF;">0.30924459</td>
+      <td class="gt_row gt_center" style="background-color: #3E9842; color: #FFFFFF;">0.21906430</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">P.Rivers</td>
+      <td class="gt_row gt_center">642</td>
+      <td class="gt_row gt_center">641</td>
+      <td class="gt_row gt_center" style="background-color: #318235; color: #FFFFFF;">-0.04970449</td>
+      <td class="gt_row gt_center" style="background-color: #C2E3C3; color: #000000;">-0.0005155568</td>
+      <td class="gt_row gt_center" style="background-color: #8FCD91; color: #000000;">-0.0005947151</td>
+      <td class="gt_row gt_center" style="background-color: #409C44; color: #FFFFFF;">0.26971278</td>
+      <td class="gt_row gt_center" style="background-color: #3E9842; color: #FFFFFF;">0.21855625</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">B.Mayfield</td>
+      <td class="gt_row gt_center">658</td>
+      <td class="gt_row gt_center">641</td>
+      <td class="gt_row gt_center" style="background-color: #43A047; color: #FFFFFF;">-0.07727963</td>
+      <td class="gt_row gt_center" style="background-color: #64BA68; color: #000000;">0.0164111973</td>
+      <td class="gt_row gt_center" style="background-color: #90CD92; color: #000000;">-0.0007508075</td>
+      <td class="gt_row gt_center" style="background-color: #439F47; color: #FFFFFF;">0.26119660</td>
+      <td class="gt_row gt_center" style="background-color: #429F46; color: #FFFFFF;">0.19957735</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">K.Cousins</td>
+      <td class="gt_row gt_center">610</td>
+      <td class="gt_row gt_center">603</td>
+      <td class="gt_row gt_center" style="background-color: #7CC57F; color: #000000;">-0.12230155</td>
+      <td class="gt_row gt_center" style="background-color: #6CBE70; color: #000000;">0.0147704343</td>
+      <td class="gt_row gt_center" style="background-color: #9BD29D; color: #000000;">-0.0026041968</td>
+      <td class="gt_row gt_center" style="background-color: #3A903E; color: #FFFFFF;">0.29854531</td>
+      <td class="gt_row gt_center" style="background-color: #44A248; color: #FFFFFF;">0.18840999</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Carr</td>
+      <td class="gt_row gt_center">607</td>
+      <td class="gt_row gt_center">599</td>
+      <td class="gt_row gt_center" style="background-color: #70C074; color: #000000;">-0.11518955</td>
+      <td class="gt_row gt_center" style="background-color: #69BC6D; color: #000000;">0.0154246761</td>
+      <td class="gt_row gt_center" style="background-color: #7AC47D; color: #000000;">0.0034948931</td>
+      <td class="gt_row gt_center" style="background-color: #419C45; color: #FFFFFF;">0.26870270</td>
+      <td class="gt_row gt_center" style="background-color: #47A74B; color: #000000;">0.17197516</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">J.Herbert</td>
+      <td class="gt_row gt_center">702</td>
+      <td class="gt_row gt_center">680</td>
+      <td class="gt_row gt_center" style="background-color: #429E46; color: #FFFFFF;">-0.07547574</td>
+      <td class="gt_row gt_center" style="background-color: #6FBF73; color: #000000;">0.0141107718</td>
+      <td class="gt_row gt_center" style="background-color: #86C989; color: #000000;">0.0010037187</td>
+      <td class="gt_row gt_center" style="background-color: #48A94C; color: #000000;">0.23224953</td>
+      <td class="gt_row gt_center" style="background-color: #47A74B; color: #000000;">0.17188828</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">L.Jackson</td>
+      <td class="gt_row gt_center">657</td>
+      <td class="gt_row gt_center">532</td>
+      <td class="gt_row gt_center" style="background-color: #419D45; color: #FFFFFF;">-0.07465157</td>
+      <td class="gt_row gt_center" style="background-color: #1B5E20; color: #FFFFFF;">0.0452502354</td>
+      <td class="gt_row gt_center" style="background-color: #1B5E20; color: #FFFFFF;">0.0399231495</td>
+      <td class="gt_row gt_center" style="background-color: #72C075; color: #000000;">0.14857664</td>
+      <td class="gt_row gt_center" style="background-color: #49AA4D; color: #000000;">0.15909846</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Prescott</td>
+      <td class="gt_row gt_center">254</td>
+      <td class="gt_row gt_center">244</td>
+      <td class="gt_row gt_center" style="background-color: #76C279; color: #000000;">-0.11869214</td>
+      <td class="gt_row gt_center" style="background-color: #75C278; color: #000000;">0.0128250064</td>
+      <td class="gt_row gt_center" style="background-color: #3D9541; color: #FFFFFF;">0.0246184102</td>
+      <td class="gt_row gt_center" style="background-color: #47A74B; color: #000000;">0.23841723</td>
+      <td class="gt_row gt_center" style="background-color: #4AAB4E; color: #000000;">0.15716851</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Brees</td>
+      <td class="gt_row gt_center">504</td>
+      <td class="gt_row gt_center">495</td>
+      <td class="gt_row gt_center" style="background-color: #3A913E; color: #FFFFFF;">-0.06406314</td>
+      <td class="gt_row gt_center" style="background-color: #D4EBD4; color: #000000;">-0.0035648341</td>
+      <td class="gt_row gt_center" style="background-color: #8ECC91; color: #000000;">-0.0004486188</td>
+      <td class="gt_row gt_center" style="background-color: #4AAC4E; color: #000000;">0.22228673</td>
+      <td class="gt_row gt_center" style="background-color: #4AAC4E; color: #000000;">0.15421014</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">M.Stafford</td>
+      <td class="gt_row gt_center">618</td>
+      <td class="gt_row gt_center">612</td>
+      <td class="gt_row gt_center" style="background-color: #50B154; color: #000000;">-0.09556944</td>
+      <td class="gt_row gt_center" style="background-color: #51B155; color: #000000;">0.0208790414</td>
+      <td class="gt_row gt_center" style="background-color: #81C784; color: #000000;">0.0019021977</td>
+      <td class="gt_row gt_center" style="background-color: #4AAB4E; color: #000000;">0.22616621</td>
+      <td class="gt_row gt_center" style="background-color: #4AAC4E; color: #000000;">0.15317420</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">M.Ryan</td>
+      <td class="gt_row gt_center">721</td>
+      <td class="gt_row gt_center">716</td>
+      <td class="gt_row gt_center" style="background-color: #50B154; color: #000000;">-0.09547257</td>
+      <td class="gt_row gt_center" style="background-color: #64BA68; color: #000000;">0.0164535252</td>
+      <td class="gt_row gt_center" style="background-color: #BEE1BF; color: #000000;">-0.0089480259</td>
+      <td class="gt_row gt_center" style="background-color: #49A94D; color: #000000;">0.23095023</td>
+      <td class="gt_row gt_center" style="background-color: #4CAF50; color: #000000;">0.14298316</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">K.Murray</td>
+      <td class="gt_row gt_center">736</td>
+      <td class="gt_row gt_center">661</td>
+      <td class="gt_row gt_center" style="background-color: #45A349; color: #FFFFFF;">-0.08029117</td>
+      <td class="gt_row gt_center" style="background-color: #246C28; color: #FFFFFF;">0.0425015071</td>
+      <td class="gt_row gt_center" style="background-color: #429F46; color: #FFFFFF;">0.0212079048</td>
+      <td class="gt_row gt_center" style="background-color: #6DBE71; color: #000000;">0.15589018</td>
+      <td class="gt_row gt_center" style="background-color: #4EB052; color: #000000;">0.13892207</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">R.Wilson</td>
+      <td class="gt_row gt_center">741</td>
+      <td class="gt_row gt_center">729</td>
+      <td class="gt_row gt_center" style="background-color: #70BF74; color: #000000;">-0.11502716</td>
+      <td class="gt_row gt_center" style="background-color: #4BAD4F; color: #000000;">0.0226703124</td>
+      <td class="gt_row gt_center" style="background-color: #B6DEB7; color: #000000;">-0.0075150431</td>
+      <td class="gt_row gt_center" style="background-color: #48A84C; color: #000000;">0.23567412</td>
+      <td class="gt_row gt_center" style="background-color: #50B154; color: #000000;">0.13580223</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">J.Burrow</td>
+      <td class="gt_row gt_center">485</td>
+      <td class="gt_row gt_center">468</td>
+      <td class="gt_row gt_center" style="background-color: #73C176; color: #000000;">-0.11676145</td>
+      <td class="gt_row gt_center" style="background-color: #E8F5E9; color: #000000;">-0.0073074216</td>
+      <td class="gt_row gt_center" style="background-color: #64BA68; color: #000000;">0.0086612836</td>
+      <td class="gt_row gt_center" style="background-color: #47A74B; color: #000000;">0.23741130</td>
+      <td class="gt_row gt_center" style="background-color: #57B45B; color: #000000;">0.12200371</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">B.Roethlisberger</td>
+      <td class="gt_row gt_center">742</td>
+      <td class="gt_row gt_center">736</td>
+      <td class="gt_row gt_center" style="background-color: #1B5E20; color: #FFFFFF;">-0.02888082</td>
+      <td class="gt_row gt_center" style="background-color: #B6DEB8; color: #000000;">0.0014898278</td>
+      <td class="gt_row gt_center" style="background-color: #C2E3C3; color: #000000;">-0.0097935997</td>
+      <td class="gt_row gt_center" style="background-color: #6DBE71; color: #000000;">0.15617319</td>
+      <td class="gt_row gt_center" style="background-color: #59B55C; color: #000000;">0.11878916</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">T.Bridgewater</td>
+      <td class="gt_row gt_center">598</td>
+      <td class="gt_row gt_center">590</td>
+      <td class="gt_row gt_center" style="background-color: #48A94C; color: #000000;">-0.08648059</td>
+      <td class="gt_row gt_center" style="background-color: #2E7E32; color: #FFFFFF;">0.0391215885</td>
+      <td class="gt_row gt_center" style="background-color: #E8F5E9; color: #000000;">-0.0171713090</td>
+      <td class="gt_row gt_center" style="background-color: #63B966; color: #000000;">0.17438540</td>
+      <td class="gt_row gt_center" style="background-color: #5DB761; color: #000000;">0.10944314</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">M.Trubisky</td>
+      <td class="gt_row gt_center">387</td>
+      <td class="gt_row gt_center">371</td>
+      <td class="gt_row gt_center" style="background-color: #54B258; color: #000000;">-0.09769273</td>
+      <td class="gt_row gt_center" style="background-color: #4CAF50; color: #000000;">0.0220281968</td>
+      <td class="gt_row gt_center" style="background-color: #B5DEB7; color: #000000;">-0.0074575415</td>
+      <td class="gt_row gt_center" style="background-color: #63B966; color: #000000;">0.17437641</td>
+      <td class="gt_row gt_center" style="background-color: #66BB6A; color: #000000;">0.09125434</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">G.Minshew II</td>
+      <td class="gt_row gt_center">393</td>
+      <td class="gt_row gt_center">391</td>
+      <td class="gt_row gt_center" style="background-color: #A3D5A5; color: #000000;">-0.14054262</td>
+      <td class="gt_row gt_center" style="background-color: #47A74B; color: #000000;">0.0248020992</td>
+      <td class="gt_row gt_center" style="background-color: #B1DCB3; color: #000000;">-0.0066612108</td>
+      <td class="gt_row gt_center" style="background-color: #4DB051; color: #000000;">0.21160857</td>
+      <td class="gt_row gt_center" style="background-color: #67BB6B; color: #000000;">0.08920684</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">J.Goff</td>
+      <td class="gt_row gt_center">681</td>
+      <td class="gt_row gt_center">668</td>
+      <td class="gt_row gt_center" style="background-color: #58B45C; color: #000000;">-0.10027366</td>
+      <td class="gt_row gt_center" style="background-color: #D5ECD6; color: #000000;">-0.0039042479</td>
+      <td class="gt_row gt_center" style="background-color: #6BBD6F; color: #000000;">0.0070888520</td>
+      <td class="gt_row gt_center" style="background-color: #71C074; color: #000000;">0.14954229</td>
+      <td class="gt_row gt_center" style="background-color: #7AC47D; color: #000000;">0.05245323</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">C.Newton</td>
+      <td class="gt_row gt_center">545</td>
+      <td class="gt_row gt_center">441</td>
+      <td class="gt_row gt_center" style="background-color: #4BAD4F; color: #000000;">-0.09055944</td>
+      <td class="gt_row gt_center" style="background-color: #5FB863; color: #000000;">0.0176906841</td>
+      <td class="gt_row gt_center" style="background-color: #388E3C; color: #FFFFFF;">0.0272220482</td>
+      <td class="gt_row gt_center" style="background-color: #98D09A; color: #000000;">0.09393869</td>
+      <td class="gt_row gt_center" style="background-color: #7CC57F; color: #000000;">0.04829199</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">T.Tagovailoa</td>
+      <td class="gt_row gt_center">352</td>
+      <td class="gt_row gt_center">341</td>
+      <td class="gt_row gt_center" style="background-color: #5CB660; color: #000000;">-0.10266496</td>
+      <td class="gt_row gt_center" style="background-color: #4BAD4F; color: #000000;">0.0224799574</td>
+      <td class="gt_row gt_center" style="background-color: #65BA69; color: #000000;">0.0085369218</td>
+      <td class="gt_row gt_center" style="background-color: #8ECD91; color: #000000;">0.10570986</td>
+      <td class="gt_row gt_center" style="background-color: #84C887; color: #000000;">0.03405318</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">A.Dalton</td>
+      <td class="gt_row gt_center">398</td>
+      <td class="gt_row gt_center">388</td>
+      <td class="gt_row gt_center" style="background-color: #53B257; color: #000000;">-0.09712021</td>
+      <td class="gt_row gt_center" style="background-color: #64BA68; color: #000000;">0.0165275664</td>
+      <td class="gt_row gt_center" style="background-color: #87CA8A; color: #000000;">0.0008095364</td>
+      <td class="gt_row gt_center" style="background-color: #92CE94; color: #000000;">0.10116811</td>
+      <td class="gt_row gt_center" style="background-color: #8DCC8F; color: #000000;">0.02138500</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">N.Mullens</td>
+      <td class="gt_row gt_center">365</td>
+      <td class="gt_row gt_center">362</td>
+      <td class="gt_row gt_center" style="background-color: #94CF96; color: #000000;">-0.13334986</td>
+      <td class="gt_row gt_center" style="background-color: #BDE1BE; color: #000000;">0.0003735776</td>
+      <td class="gt_row gt_center" style="background-color: #B5DDB7; color: #000000;">-0.0074036130</td>
+      <td class="gt_row gt_center" style="background-color: #6FBF72; color: #000000;">0.15351254</td>
+      <td class="gt_row gt_center" style="background-color: #92CE95; color: #000000;">0.01313264</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Lock</td>
+      <td class="gt_row gt_center">518</td>
+      <td class="gt_row gt_center">503</td>
+      <td class="gt_row gt_center" style="background-color: #4AAB4E; color: #000000;">-0.08871160</td>
+      <td class="gt_row gt_center" style="background-color: #82C785; color: #000000;">0.0101050584</td>
+      <td class="gt_row gt_center" style="background-color: #81C784; color: #000000;">0.0017843730</td>
+      <td class="gt_row gt_center" style="background-color: #AAD8AC; color: #000000;">0.06966398</td>
+      <td class="gt_row gt_center" style="background-color: #A0D4A2; color: #000000;">-0.00696190</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Jones</td>
+      <td class="gt_row gt_center">577</td>
+      <td class="gt_row gt_center">546</td>
+      <td class="gt_row gt_center" style="background-color: #A4D6A6; color: #000000;">-0.14073049</td>
+      <td class="gt_row gt_center" style="background-color: #64BA68; color: #000000;">0.0165726788</td>
+      <td class="gt_row gt_center" style="background-color: #B1DCB3; color: #000000;">-0.0067126952</td>
+      <td class="gt_row gt_center" style="background-color: #89CA8C; color: #000000;">0.11208903</td>
+      <td class="gt_row gt_center" style="background-color: #A8D7AA; color: #000000;">-0.01873183</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">N.Foles</td>
+      <td class="gt_row gt_center">348</td>
+      <td class="gt_row gt_center">346</td>
+      <td class="gt_row gt_center" style="background-color: #4AAB4E; color: #000000;">-0.08915523</td>
+      <td class="gt_row gt_center" style="background-color: #B3DCB4; color: #000000;">0.0020674805</td>
+      <td class="gt_row gt_center" style="background-color: #83C886; color: #000000;">0.0014846447</td>
+      <td class="gt_row gt_center" style="background-color: #C5E5C6; color: #000000;">0.03501343</td>
+      <td class="gt_row gt_center" style="background-color: #BDE1BE; color: #000000;">-0.05058967</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">C.Wentz</td>
+      <td class="gt_row gt_center">565</td>
+      <td class="gt_row gt_center">537</td>
+      <td class="gt_row gt_center" style="background-color: #B5DDB6; color: #000000;">-0.14859188</td>
+      <td class="gt_row gt_center" style="background-color: #45A449; color: #FFFFFF;">0.0263493927</td>
+      <td class="gt_row gt_center" style="background-color: #9FD3A1; color: #000000;">-0.0034010386</td>
+      <td class="gt_row gt_center" style="background-color: #B9DFBA; color: #000000;">0.05064379</td>
+      <td class="gt_row gt_center" style="background-color: #CDE8CE; color: #000000;">-0.07499974</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">A.Smith</td>
+      <td class="gt_row gt_center">290</td>
+      <td class="gt_row gt_center">289</td>
+      <td class="gt_row gt_center" style="background-color: #7CC57F; color: #000000;">-0.12225435</td>
+      <td class="gt_row gt_center" style="background-color: #D1EAD2; color: #000000;">-0.0031814597</td>
+      <td class="gt_row gt_center" style="background-color: #9AD19C; color: #000000;">-0.0024405805</td>
+      <td class="gt_row gt_center" style="background-color: #C6E5C7; color: #000000;">0.03369743</td>
+      <td class="gt_row gt_center" style="background-color: #D8EED9; color: #000000;">-0.09385595</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">D.Haskins</td>
+      <td class="gt_row gt_center">280</td>
+      <td class="gt_row gt_center">274</td>
+      <td class="gt_row gt_center" style="background-color: #E8F5E9; color: #000000;">-0.17333512</td>
+      <td class="gt_row gt_center" style="background-color: #74C177; color: #000000;">0.0130779217</td>
+      <td class="gt_row gt_center" style="background-color: #7EC681; color: #000000;">0.0026199408</td>
+      <td class="gt_row gt_center" style="background-color: #BDE1BE; color: #000000;">0.04605117</td>
+      <td class="gt_row gt_center" style="background-color: #E3F3E4; color: #000000;">-0.11158608</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black;">S.Darnold</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black;">447</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black;">443</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; background-color: #97D099; color: #000000;">-0.13499710</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; background-color: #49AA4D; color: #000000;">0.0239548028</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; background-color: #71C074; color: #000000;">0.0057059449</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; background-color: #E8F5E9; color: #000000;">-0.01453732</td>
+      <td class="gt_row gt_center" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; background-color: #E8F5E9; color: #000000;">-0.11987367</td>
+    </tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="8"><strong>Table:</strong> @Tucker_TnL | <strong>Data:</strong> @nflfastR</td>
+    </tr>
+  </tfoot>
+  
+</table></div>
+</body>
+</html>

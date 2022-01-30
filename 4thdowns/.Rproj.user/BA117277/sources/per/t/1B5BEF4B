@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1616607474021.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3145330616",
+    "id" : "1B5BEF4B",
+    "lastKnownWriteTime" : 1616617227,
+    "last_content_update" : 1616617227386,
+    "path" : "~/Desktop/R/4thdowns/app.R",
+    "project_path" : "app.R",
+    "properties" : {
+        "cursorPosition" : "3,1",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

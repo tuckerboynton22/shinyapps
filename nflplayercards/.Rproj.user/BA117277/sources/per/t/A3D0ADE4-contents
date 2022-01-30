@@ -1,0 +1,49 @@
+
+library(shiny)
+library(tidyverse)
+
+passers <- read_csv("passers.csv")
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("@import url('https://fonts.googleapis.com/css2?family=Chivo&display=swap');
+                    
+                    /* Change header text to imported font */
+                    .tbl, h5, h2 {
+                    font-family: 'Chivo';
+                    }"))
+  ),
+  
+  # Application title
+  titlePanel(title = h2("2020 NFL Quarterback Cards", align = "center"), windowTitle = "2020 NFL Quarterback Cards"),
+  
+  # Sidebar with a slider input for number of bins 
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("player", label = "Player:", 
+                  choices = c(passers[2])),
+      width = 12),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      imageOutput("myImage"),
+    )
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+   
+  output$myImage <- renderImage({
+    
+    list(src = paste0("Cards/", input$player, ".png"),
+       contentType = 'image/png',
+       width = 1200,
+       height = 600,
+       alt = "This is alternate text")
+  }, deleteFile = FALSE)
+}
+
+# Run the application 
+shinyApp(ui = ui, server = server)

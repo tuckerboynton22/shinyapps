@@ -1,0 +1,19 @@
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+library(ggimage)
+library(nflfastR)
+library(ggtext)
+library(statar)
+library(nfl4th)
+
+fourth_data <- load_4th_pbp(2020)
+
+fourth_downs <- fourth_data %>%
+  filter(!is.na(go_boost)) %>%
+  mutate(
+    xwp_boost = if_else(go == 100, go_boost, -go_boost),
+    fourth_success = if_else(xwp_boost > 0, 1, 0)) %>%
+  select(posteam, week, qtr, wp, ydstogo, go_boost, go, xwp_boost, fourth_success, game_seconds_remaining)
+
+write_csv(fourth_downs, "fourth_downs.csv")

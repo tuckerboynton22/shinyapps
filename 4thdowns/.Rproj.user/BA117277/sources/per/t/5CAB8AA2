@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1616607661927.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "714061730",
+    "id" : "5CAB8AA2",
+    "lastKnownWriteTime" : 1616609943,
+    "last_content_update" : 1616609943326,
+    "path" : "~/Desktop/R/4thdowns/get_decisions.R",
+    "project_path" : "get_decisions.R",
+    "properties" : {
+        "cursorPosition" : "0,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

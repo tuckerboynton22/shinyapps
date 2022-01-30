@@ -1,0 +1,488 @@
+library(ggridges)
+library(ggtext)
+library(ggplot2)
+library(tidyverse)
+library(readxl)
+library(gt)
+library(nflfastR)
+library(espnscrapeR)
+library(sysfonts)
+library(jsonlite)
+library(curl)
+library(showtext)
+library(ggrepel)
+
+font_add_google("Chivo", "Chivo")
+showtext_auto()
+
+gt_theme_538 <- function(data,...) {
+  data %>%
+    opt_all_caps()  %>%
+    opt_table_font(
+      font = list(
+        google_font("Chivo"),
+        default_fonts()
+      )
+    ) %>%
+    tab_style(
+      style = cell_borders(
+        sides = "bottom", color = "black", weight = px(3)
+      ),
+      locations = cells_body(
+        columns = TRUE,
+        # This is a relatively sneaky way of changing the bottom border
+        # Regardless of data size
+        rows = nrow(data$`_data`)
+      )
+    )  %>% 
+    tab_options(
+      column_labels.background.color = "white",
+      table.border.top.width = px(3),
+      table.border.top.color = "transparent",
+      table.border.bottom.color = "transparent",
+      table.border.bottom.width = px(3),
+      table_body.border.bottom.color = "black",
+      column_labels.border.top.width = px(3),
+      column_labels.border.top.color = "black",
+      column_labels.border.lr.color = "grey",
+      column_labels.vlines.style = "solid",
+      table_body.vlines.style = "solid",
+      table_body.vlines.color = "lightgrey",
+      column_labels.border.bottom.width = px(3),
+      column_labels.border.bottom.color = "black",
+      data_row.padding = px(3),
+      source_notes.font.size = 16,
+      table.font.size = 24,
+      heading.align = "left",
+      ...
+    ) 
+}
+
+credits <- c("Graphic: @Tucker_TnL | Data: @nflfastR") %>%
+  as.data.frame() %>%
+  gt() %>%
+  cols_label(. = "") %>%
+  gt_theme_538() %>%
+  tab_options(table.border.top.color = "black",
+              table_body.vlines.style = "none",
+              table_body.vlines.color = "transparent",
+              column_labels.hidden = TRUE
+              ) %>%
+  gtsave("Credit.png")
+
+qbrs <- get_nfl_qbr(2020, week = NA, season_type = "Regular")
+
+qbrs <- qbrs %>%
+  mutate(name = gsub(" ", "", short_name, fixed = TRUE),
+         name = ifelse(name == "G.MinshewII", "G.Minshew II", name))
+
+caphits <- read_excel("caphits.xlsx")
+
+playerinfo <- read_excel("info.xlsx")
+
+roster <- fast_scraper_roster(2020) %>%
+  mutate(college = ifelse(full_name == "Ryan Tannehill", "Texas A&M", college))
+
+get_heatmap_averages <- function(pbp){
+  
+  data <- pbp %>% filter(season == 2020, week < 18)
+  
+  left <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "left") %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa))
+  
+  right <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "right") %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa))
+  
+  middle <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "middle") %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa))
+  
+  left_middle <- left_join(left, middle, by = "depth")
+  averages <- left_join(left_middle, right, by = "depth") %>%
+    arrange(match(depth, c("> 20", "11-20", "1-10", "< 1")))
+  
+  return(averages)
+}
+  
+## READ IN DATA
+seasons <- 2016:2020
+pbp <- map_df(seasons, function(x) {
+  readRDS(
+    url(
+      paste0("https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_",x,".rds")
+    )
+  )
+})
+
+averages <- get_heatmap_averages(pbp)
+
+## HEATMAPS
+make_heatmap <- function(pbp, player){
+  
+  data <- pbp %>% filter(season == 2020, week < 18)
+  
+  left_player <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "left", name == player) %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa)) %>%
+    mutate(lg_avg = case_when(
+      depth == "< 1" ~ averages[[2]][4],
+      depth == "1-10" ~ averages[[2]][3],
+      depth == "11-20" ~ averages[[2]][2],
+      depth == "> 20" ~ averages[[2]][1]),
+      EPA_pct = (EPA - lg_avg)/lg_avg) %>%
+    select(depth, EPA_pct)
+  
+  middle_player <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "middle", name == player) %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa)) %>%
+    mutate(lg_avg = case_when(
+      depth == "< 1" ~ averages[[3]][4],
+      depth == "1-10" ~ averages[[3]][3],
+      depth == "11-20" ~ averages[[3]][2],
+      depth == "> 20" ~ averages[[3]][1]),
+      EPA_pct = (EPA - lg_avg)/lg_avg) %>%
+    select(depth, EPA_pct)
+  
+  right_player <- data %>%
+    filter(!is.na(epa), !is.na(air_yards), pass_location == "right", name == player) %>%
+    mutate(depth = case_when(
+      air_yards <= 0 ~ "< 1",
+      air_yards >= 1 & air_yards < 11 ~ "1-10",
+      air_yards >= 11 & air_yards < 21 ~ "11-20",
+      air_yards >= 21 ~ "> 20"
+    )) %>%
+    group_by(depth) %>%
+    summarize(EPA = mean(qb_epa)) %>%
+    mutate(lg_avg = case_when(
+      depth == "< 1" ~ averages[[4]][4],
+      depth == "1-10" ~ averages[[4]][3],
+      depth == "11-20" ~ averages[[4]][2],
+      depth == "> 20" ~ averages[[4]][1]),
+      EPA_pct = (EPA - lg_avg)/lg_avg) %>%
+    select(depth, EPA_pct)
+  
+  
+  left_middle_player <- left_join(left_player, middle_player, by = "depth")
+  total <- left_join(left_middle_player, right_player, by = "depth") %>%
+    arrange(match(depth, c("> 20", "11-20", "1-10", "< 1")))
+  
+  
+  total %>%
+    gt() %>%
+    cols_label(
+      EPA_pct.x = "Left",
+      EPA_pct.y = "Middle",
+      EPA_pct = "Right",
+      depth = "Air Yards"
+    ) %>%
+    tab_header(
+      title = "2020 Passing Heatmap",
+      subtitle = "EPA/play | % above/below league average"
+    ) %>%
+    gt_theme_538() %>%
+    fmt_percent(columns = 2:4, decimals = 1) %>%
+    cols_align(align = "center", columns = c(1:4)) %>%
+    data_color(
+      columns = 2:4, 
+      colors =
+        scales::col_numeric(
+          palette = paletteer::paletteer_d(
+            palette = "ggsci::default_gsea"
+          ) %>% as.character(),
+          domain = c(-2.5, 2.5)
+        )
+    ) %>%
+    tab_style(cell_fill(color = "#D60C00FF"), locations = list(
+      cells_body(columns = 2, rows = EPA_pct.x > 2.5),
+      cells_body(columns = 3, rows = EPA_pct.y > 2.5),
+      cells_body(columns = 4, rows = EPA_pct > 2.5))) %>%
+    tab_style(cell_fill(color = "#4500ACFF"), locations = list(
+      cells_body(columns = 2, rows = EPA_pct.x < -2.5),
+      cells_body(columns = 3, rows = EPA_pct.y < -2.5),
+      cells_body(columns = 4, rows = EPA_pct < -2.5))) %>%
+    gtsave(paste0(player, " Heatmap.png"))
+}
+
+## EPA BREAKDOWN
+make_epa <- function(pbp, player){
+  
+  pbp %>%
+    filter(season == 2020, down < 5, week < 18, !is.na(qb_epa), pass == 1 | rush == 1) %>%
+    group_by(name) %>%
+    summarize(
+      Plays = n(),
+      Dropbacks = sum(pass),
+      Sacks = mean(qb_epa * sack, na.rm = T),
+      Scrambles = mean(qb_epa * qb_scramble, na.rm = T),
+      Rushes = mean(qb_epa * rush, na.rm = T),
+      Passes = mean(qb_epa * pass - qb_epa * qb_scramble - qb_epa * sack, na.rm = T)
+    ) %>%
+    filter(Dropbacks>300) %>%
+    mutate(
+      Sacks = rank(-Sacks, ties.method = "min"),
+      Scrambles = rank(-Scrambles, ties.method = "min"),
+      Rushes = rank(-Rushes, ties.method = "min"),
+      Passes = rank(-Passes, ties.method = "min")
+    ) %>%
+    filter(name == player) %>%
+    select(-c(name, Dropbacks)) %>%
+    gt() %>%
+    tab_header(
+      title = "2020 Efficiency by Play Type",
+      subtitle = "EPA/play rank among 33 QBs w/ 300+ dropbacks"
+    ) %>% 
+    gt_theme_538() %>%
+    cols_align(align = "center", columns = 1:5) %>%
+    data_color(
+      columns = 2:5, 
+      colors = scales::col_numeric(
+        palette = paletteer::paletteer_d(
+          palette = "ggsci::green_material"
+        ) %>% as.character(),
+        domain = 1:33
+      )
+    ) %>%
+    gtsave(paste0(player, " EPA.png"))
+}
+
+## EPA/CPOE/QBR/PFF
+make_basic <- function(pbp, player){
+  
+  pbp %>%
+    filter(season == 2020, down < 5, week < 18, !is.na(qb_epa), pass == 1 | rush == 1) %>%
+    group_by(name) %>%
+    summarize(
+      Dropbacks = sum(pass),
+      EPA = mean(qb_epa, na.rm = T),
+      CPOE = mean(cpoe, na.rm = T)
+    ) %>%
+    filter(Dropbacks>300) %>%
+    mutate(
+      EPA = rank(-EPA, ties.method = "min"),
+      CPOE = rank(-CPOE, ties.method = "min")
+    ) %>%
+    merge(read_csv("pff_qbs.csv")) %>%
+    mutate(PFF = rank(-grades_offense, ties.method = "min")) %>%
+    merge(qbrs) %>%
+    mutate(QBR = rank(-qbr_total, ties.method = "min")) %>%
+    filter(name == player) %>%
+    select(EPA, CPOE, PFF, QBR) %>%
+    gt() %>%
+    tab_header(
+      title = "2020 Overall",
+      subtitle = "Rank among 33 QBs w/ 300+ dropbacks"
+    ) %>%
+    gt_theme_538() %>%
+    cols_align(align = "center", columns = 1:4) %>%
+    data_color(
+      columns = 1:4, 
+      colors = scales::col_numeric(
+        palette = paletteer::paletteer_d(
+          palette = "ggsci::green_material"
+        ) %>% as.character(),
+        domain = 1:33
+      )
+    ) %>%
+    gtsave(paste0(player, " Basic.png"))
+}
+
+## LAST FIVE YEARS EPA
+make_epa_timeline <- function(pbp, player){
+  
+  passers <- pbp %>%
+    filter(down < 5, week < 18, !is.na(qb_epa), pass == 1 | rush == 1) %>%
+    group_by(name, season) %>%
+    summarize(
+      dbs = sum(pass),
+      EPA = mean(qb_epa, na.rm = T)
+    ) %>%
+    filter(dbs >= 300)
+  
+  passers <- passers %>% 
+    arrange(EPA) %>%
+    group_by(season) %>% 
+    mutate(rank = rank(-EPA, ties.method = "min")) %>%
+    ungroup()
+  
+  median_epa <- quantile(passers$EPA, probs = 0.5, na.rm = T)
+  seventyfifth_epa <- quantile(passers$EPA, probs = 0.75, na.rm = T)
+  twentyfifth_epa <- quantile(passers$EPA, probs = 0.25, na.rm = T)
+  scaleFUN <- function(x) sprintf("%.2f", x)
+  
+  passers %>%
+    filter(name == player) %>%
+    arrange(season) %>%
+    ggplot(aes(season, EPA)) +
+    geom_hline(yintercept = median_epa, linetype = "dashed", color = "blue", size = 3, alpha = 0.5) +
+    geom_hline(yintercept = seventyfifth_epa, linetype = "dashed", color = "green", size = 3, alpha = 0.5) +
+    geom_hline(yintercept = twentyfifth_epa, linetype = "dashed", color = "green", size = 3, alpha = 0.5) +
+    annotate("text", x = 2020, y = median_epa + 0.02, label = "50th %", size = 3) +
+    annotate("text", x = 2020, y = seventyfifth_epa + 0.02, label = "75th %", size = 3) +
+    annotate("text", x = 2020, y = twentyfifth_epa + 0.02, label = "25th %", size = 3) +
+    geom_point(color = "red", size = 7) +
+    geom_path(color = "red", size = 4) +
+    geom_text_repel(aes(label = paste0("(", rank, ")")), size = 8) +
+    ggthemes::theme_fivethirtyeight() +
+    labs(title = "EPA/Play Timeline", subtitle = "League rank in parentheses") +
+    ggthemes::theme_fivethirtyeight() +
+    theme(
+      text = element_text(family = "Chivo"),
+      legend.position = "none",
+      plot.title = element_markdown(size = 28, hjust = 0.5, face = "plain"),
+      plot.subtitle = element_markdown(size = 22, hjust = 0.5),
+      axis.text.x = element_text(size = 20),
+      axis.text.y = element_text(size = 20),
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white")
+    ) +
+    scale_x_continuous(breaks = c(2016, 2017, 2018, 2019, 2020)) +
+    scale_y_continuous(labels = scaleFUN)
+  
+  ggsave(paste0(player, " EPA Timeline.png"), width = 5.77, height = 4.13, units = "in")
+  
+}
+
+## GET HEADSHOT & BASIC INFO
+get_headshot <- function(pbp, player){
+  
+  merged_player <- pbp %>%
+    filter(season == 2020) %>%
+    group_by(name, id) %>%
+    summarize(dropbacks = sum(pass)) %>%
+    filter(dropbacks >= 300, name == player) %>%
+    decode_player_ids() %>%
+    mutate(gsis_id = id) %>%
+    merge(roster) %>%
+    merge(caphits) %>%
+    merge(playerinfo)
+  
+  download.file(merged_player$headshot_url, paste0(player, " Headshot.png"), mode = "wb")
+
+  merged_player <- merged_player %>%
+    select(full_name, team, position, jersey_number, college,
+           Age, height, weight, amount, GS) %>%
+    t()
+  
+  full_name <- merged_player[1]
+  
+  df1 <- c(paste0("Tm: ", merged_player[2]), paste0("Pos: ", merged_player[3]),
+          paste0("Number: ", merged_player[4]), paste0("College: ", merged_player[5]))
+  
+  df1 %>%
+    as.data.frame() %>%
+    gt() %>%
+    cols_label(. = "") %>%
+    tab_header(title = full_name) %>%
+    tab_options(heading.title.font.size = 36) %>%
+    gt_theme_538() %>%
+    gtsave(paste0(player, " Header.png"))
+  
+  df2 <- c(paste0("Age: ", merged_player[6]), paste0("Height: ", merged_player[7]),
+           paste0("Weight: ", merged_player[8]), paste0("Cap Hit: $", toString(round(as.numeric(merged_player[9]) / 1000000, 1))),
+           paste0("Starts: ", merged_player[10]))
+  
+  df2 %>%
+    as.data.frame() %>%
+    gt() %>%
+    cols_label(. = "") %>%
+    gt_theme_538() %>%
+    gtsave(paste0(player, " Info.png"))
+  
+  
+}
+
+## MAKE GAMELOG
+make_gamelog <- function(pbp, player){
+  
+  passers <- pbp %>%
+    filter(season == 2020, down < 5, week < 18, !is.na(qb_epa), pass == 1 | rush == 1) %>%
+    group_by(name, id, week) %>%
+    summarize(
+      dbs = sum(pass),
+      EPA = mean(qb_epa, na.rm = T)
+    ) %>%
+    filter(dbs >= 15)
+  
+  median_epa <- quantile(passers$EPA, probs = 0.5, na.rm = T)
+  scaleFUN <- function(x) sprintf("%.2f", x)
+  
+  passers %>%
+    filter(name == player) %>%
+    arrange(week) %>%
+    ggplot(aes(week, EPA)) +
+    geom_hline(yintercept = median_epa, linetype = "dashed", color = "blue", size = 1, alpha = 0.5) +
+    geom_point(color = "red", size = 1) +
+    geom_path(color = "red", size = 1) +
+    ggthemes::theme_fivethirtyeight() +
+    labs(title = "2020 EPA/Play Game Log") +
+    ggthemes::theme_fivethirtyeight() +
+    theme(
+      text = element_text(family = "Chivo"),
+      legend.position = "none",
+      plot.title = element_markdown(size = 22, hjust = 0.5, face = "plain"),
+      axis.text.x = element_text(size = 10),
+      axis.text.y = element_text(size = 10),
+      plot.background = element_rect(fill = "white"),
+      panel.background = element_rect(fill = "white")
+    ) +
+    scale_y_continuous(labels = scaleFUN)
+  
+  ggsave(paste0(player, " EPA Gamelog.png"), width = 5.77, height = 2.08, units = "in")
+  
+}
+
+passers <- pbp %>%
+  filter(season == 2020, down < 5, week < 18, !is.na(qb_epa), pass == 1 | rush == 1) %>%
+  group_by(name, season) %>%
+  summarize(dbs = sum(pass)) %>%
+  filter(dbs >= 300) %>%
+  select(name)
+
+write.csv(passers, "passers.csv")
+
+for (i in 1:nrow(passers)){
+  
+  make_heatmap(pbp, passers[[i,1]])
+  make_epa(pbp, passers[[i,1]])
+  make_basic(pbp, passers[[i,1]])
+  make_epa_timeline(pbp, passers[[i,1]])
+  get_headshot(pbp, passers[[i,1]])
+  make_gamelog(pbp, passers[[i,1]])
+}

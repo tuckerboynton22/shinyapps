@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1615589821818.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "17|36|58|0|\n85|38|127|0|\n142|38|240|0|\n243|34|282|0|\n285|36|323|0|\n326|43|379|0|\n382|38|428|0|\n",
+    "hash" : "192934646",
+    "id" : "8B342BAC",
+    "lastKnownWriteTime" : 1615835791,
+    "last_content_update" : 1615835791513,
+    "path" : "~/Desktop/R/nflplayercards/build_cards.R",
+    "project_path" : "build_cards.R",
+    "properties" : {
+        "cursorPosition" : "488,0",
+        "scrollLine" : "467",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
